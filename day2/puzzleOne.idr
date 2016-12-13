@@ -17,39 +17,57 @@ neighbours = [
 	Neighbours 6 9 9 8
 ]
 
-up : (i:Nat) -> Nat
-up i = case index' i neighbours of Just (Neighbours u _ _ _) => u
+neighbours2 : List NBRS
+neighbours2 = [
+	Neighbours 0 0 0 0,
+	Neighbours 1 1 3 1,
+	Neighbours 2 3 6 2,
+	Neighbours 1 4 7 2,
+	Neighbours 4 4 8 3,
+	Neighbours 5 6 5 5,
+	Neighbours 2 7 10 5,
+	Neighbours 3 8 11 6,
+	Neighbours 4 9 12 7,
+	Neighbours 9 9 9 8,
+	Neighbours 6 11 10 10,
+	Neighbours 7 12 13 10,
+	Neighbours 8 12 12 11,
+	Neighbours 11 13 13 13
+]
 
-right : (i:Nat) -> Nat
-right i = case index' i neighbours of Just (Neighbours _ e _ _) => e
+up : List NBRS -> (i:Nat) -> Nat
+up neighbours i = case index' i neighbours of Just (Neighbours u _ _ _) => u
 
-down : (i:Nat) -> Nat
-down i = case index' i neighbours of Just (Neighbours _ _ s _) => s
+right : List NBRS -> (i:Nat) -> Nat
+right neighbours i = case index' i neighbours of Just (Neighbours _ e _ _) => e
 
-left : (i:Nat) -> Nat
-left i = case index' i neighbours of Just (Neighbours _ _ _ w) => w
+down : List NBRS -> (i:Nat) -> Nat
+down neighbours i = case index' i neighbours of Just (Neighbours _ _ s _) => s
+
+left : List NBRS -> (i:Nat) -> Nat
+left neighbours i = case index' i neighbours of Just (Neighbours _ _ _ w) => w
 
 
 --parseInput : String -> List (List Char)
 --parseInput s = map unpack $ lines s
 
-nextDigit : (i:Nat) -> List Char -> Nat
-nextDigit i [] = i
-nextDigit i (c :: cs) = case c of
-	'U' => nextDigit (up i) cs
-	'R' => nextDigit (right i) cs
-	'D' => nextDigit (down i) cs
-	'L' => nextDigit (left i) cs
+nextDigit :  List NBRS -> (i:Nat) -> List Char -> Nat
+nextDigit neighbours i [] = i
+nextDigit neighbours i (c :: cs) = case c of
+	'U' => nextDigit neighbours (up neighbours i) cs
+	'R' => nextDigit neighbours (right neighbours i) cs
+	'D' => nextDigit neighbours (down neighbours i) cs
+	'L' => nextDigit neighbours (left neighbours i) cs
 
-prependNextDigit : List Nat -> List Char -> List Nat
-prependNextDigit [] cs = [nextDigit 5 cs]
-prependNextDigit nns@(n::ns) cs = let next = nextDigit n cs in next :: nns
+prependNextDigit : List NBRS ->  List Nat -> List Char -> List Nat
+prependNextDigit neighbours [] cs = [nextDigit neighbours 5 cs]
+prependNextDigit neighbours nns@(n::ns) cs = let next = nextDigit neighbours n cs in next :: nns
 
-reversedCode : List (List Char) -> List Nat
-reversedCode css = foldl prependNextDigit [] css
+reversedCode : List NBRS -> List (List Char) -> List Nat
+reversedCode neighbours css = foldl (prependNextDigit neighbours) [] css
 
-getCode : List String -> List Nat
-getCode s = reverse . reversedCode $ map unpack s
+getCode : List NBRS -> List String -> List Nat
+getCode neighbours s = reverse . (reversedCode neighbours) $ map unpack s
 
 example : List String
 example = ["ULL",
