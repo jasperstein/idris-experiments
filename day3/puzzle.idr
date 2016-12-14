@@ -13,13 +13,36 @@ Triple : Type
 Triple = (Integer, Integer, Integer)
 
 triples : String -> List Triple
-triples = (map (listToTriple {a=Integer})) . (map sort) . (map (map parseInts)) . (map words) . lines
+triples = (map (listToTriple {a=Integer})) . (map (map parseInts)) . (map words) . lines
 
 isValidTriangle : Triple -> Bool
-isValidTriangle t = (fst t + fst (snd t)) > snd (snd t)
+isValidTriangle t0 = let t = listToTriple (sort [fst t0, fst (snd t0), snd (snd t0)]) 
+					  in (fst t + fst (snd t)) > snd (snd t)
+
+countValidTriangles : List Triple -> Nat
+countValidTriangles = length . (filter isValidTriangle)
 
 puzzle1 : String -> Nat
-puzzle1 s = length (filter isValidTriangle (triples s))
+puzzle1 s = countValidTriangles (triples s)
+
+project : Nat -> Triple -> Integer
+project Z t1 = fst t1
+project (S Z) t1 = fst (snd t1)
+project (S (S Z)) t1 = snd (snd t1)
+
+project3 : Nat -> Triple -> Triple -> Triple -> Triple
+project3 n t1 t2 t3 = (project n t1, project n t2, project n t3)
+
+transpose : Triple -> Triple -> Triple -> List Triple
+transpose t1 t2 t3 = map (\n => project3 n t1 t2 t3) [0, 1, 2]
+
+
+triplesTransposed : List Triple -> List Triple
+triplesTransposed [] = []
+triplesTransposed (t1 :: t2 :: t3 :: ts) = (transpose t1 t2 t3) ++ triplesTransposed ts
+
+puzzle2 : String -> Nat
+puzzle2 s = countValidTriangles . triplesTransposed $ (triples s)
 
 
 input : String
@@ -1660,4 +1683,4 @@ input = """785  516  744
   194   69  754"""
 
 main : IO ()
-main = putStrLn (show (puzzle1 input))
+main = putStrLn (show (puzzle2 input))
