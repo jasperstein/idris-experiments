@@ -42,6 +42,22 @@ sectorOfRealRoom input = let (name, output) = splitInput input in
 puzzle1 : String -> Integer
 puzzle1 s = sum (catMaybes (map sectorOfRealRoom (lines s)))
 
+
+shiftChar : Integer -> Char -> Char
+shiftChar i c = case elemIndex c ['a'..'z'] of 
+  Just idx => (case index' (((fromIntegerNat i)+idx)`mod`26) ['a'..'z'] of Just c' => c')
+  Nothing => c
+
+shift : String -> Integer -> String
+shift s i = pack . (map (shiftChar i)) . unpack $ s
+
+decryptedRoom : String -> Maybe String
+decryptedRoom s = map (\i => (shift s i ++ show i)) (sectorOfRealRoom s) 
+
+
+puzzle2 : String -> String
+puzzle2 s = unlines (catMaybes (map decryptedRoom (lines s)))
+
 input : String
 input = """hqcfqwydw-fbqijys-whqii-huiuqhsx-660[qhiwf]
 oxjmxdfkd-pzxsbkdbo-erkq-ixyloxqlov-913[xodkb]
@@ -998,4 +1014,4 @@ bqvvu-ydkykhwpa-klanwpekjo-966[kapvw]
 aoubshwq-pibbm-kcfygvcd-740[wnucy]"""
 
 main : IO ()
-main = putStrLn (show (puzzle1 input))
+main = putStrLn (puzzle2 input)
