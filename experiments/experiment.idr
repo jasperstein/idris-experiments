@@ -7,7 +7,7 @@ infixl 10 $$
 ($$) a f = f a
 
 infixl 10 ^
-(^) : a -> (a -> b) -> b
+export (^) : a -> (a -> b) -> b
 (^) a f = f a
 
 inc: Num a => a -> a

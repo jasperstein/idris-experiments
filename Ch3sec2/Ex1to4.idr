@@ -19,3 +19,10 @@ my_map f (x :: xs) = f x :: my_map f xs
 my_vect_map: (a -> b) -> Vect n a -> Vect n b
 my_vect_map f [] = []
 my_vect_map f (x :: xs) = f x :: my_vect_map f xs
+
+Main.main: IO ()
+Main.main = do 
+    putStrLn (show (my_length [1..10])) 
+    putStrLn (show (my_reverse [1..10])) 
+    putStrLn (show (my_map (* 2) [1..10])) 
+    putStrLn (show (my_vect_map length ["Hot", "Dog", "Jumping", "Frog"]))
