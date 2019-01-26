@@ -1,5 +1,6 @@
 module Ex1to5
 
+
 import Data.Fin
 import Data.Vect
 
