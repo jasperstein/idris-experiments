@@ -7,3 +7,11 @@ Missing functionality that I like / am used to having: these may be either my la
 * where do I find a list of all operators and their fixity?
 * grouping functions as methods in a class?
 * indicate type of pattern variables in popup
+
+* refuel x impossible acts weird on PowerSource, Z, 15, Type
+
+
+* Fin n as k: Nat, pf: k < n
+* Vect n a as Fin n -> a
+* repl as initialState: a, prompt: a->String, processInput: unchanged
+* if P:Type then t: P->a else f: (P->Void)->a
