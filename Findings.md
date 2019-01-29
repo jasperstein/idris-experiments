@@ -7,6 +7,7 @@ Missing functionality that I like / am used to having: these may be either my la
 * where do I find a list of all operators and their fixity?
 * grouping functions as methods in a class?
 * indicate type of pattern variables in popup
+* intellisense is too eager filling in it top suggestion when a local variable with the name under the cursor exists
 
 * refuel x impossible acts weird on PowerSource, Z, 15, Type
 
