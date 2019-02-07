@@ -1,6 +1,6 @@
 module Ex1to3
 
-data Expr num = Val num
+export data Expr num = Val num
               | Add (Expr num) (Expr num)
               | Sub (Expr num) (Expr num)
               | Mul (Expr num) (Expr num)
